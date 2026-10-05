@@ -12,7 +12,7 @@ Matt Pocock 的 Skills v1.3 有三個新 skill：implement-spec 派 sub-agent �
 |---|---|
 | `index.html` | 單檔網頁，可直接用瀏覽器開啟；CSS 與互動全內嵌，圖片用本機相對路徑，無外部腳本 |
 | `matt_pocock_skills_v1_3.md` | 正式 Markdown |
-| `images/` | 全覽圖（16:9／9:16）與分享封面 `hero/og_1200x630.png` 的 PNG 原檔；`images/web/hero/` 是網頁實際載入的 WebP |
+| `images/` | 頁首全覽圖、內文三張配圖（implement-spec、pr、retro，各 16:9／9:16，在 `figs/`）與分享封面 `hero/og_1200x630.png` 的 PNG 原檔；`images/web/` 是網頁實際載入的 WebP |
 | `share_post.md` | 社群分享文 |
 | `qa/`、`research/` | 驗收、審稿與查證紀錄、官方檔副本、提示詞與建置腳本，僅留作者本機，不公開 |
 

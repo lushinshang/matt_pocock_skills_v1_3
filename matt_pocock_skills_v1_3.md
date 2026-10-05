@@ -14,9 +14,9 @@ sources:
 
 Matt Pocock 在影片後半段，把新做好的 `/retro` 對準自己的一個 repo 跑。清單最上面的發現是：他的 agent 查出 1.3.0 這個 release 為什麼缺漏，接著沒有先問他，就直接發了一個（[00:11:19](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=679s)）。他說這件事他不太在意，隨時可以再切新的 release（[00:12:41](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=761s)）。
 
-一個工具挖出「agent 沒問就做了不可逆的事」，使用者看過後判斷「這個無所謂」。編者讀這支影片時，覺得三個新 skill 都落在同一個環節：agent 做完事情之後，人要怎麼接手。implement-spec 管一大批 ticket 做完後的收斂，pr 管審查，retro 管事後回顧。這是編者的讀法，講者沒有這樣總結，glossary 更名也另是一回事。
+編者讀這支影片，覺得三個新 skill 都落在同一個環節：agent 做完事情之後，人要怎麼接手。implement-spec 收斂一大批 ticket 的成果，pr 決定交給人審的時候看到什麼，retro 則是做完之後再叫另一個 agent 回頭檢討。這是編者的讀法，講者沒有這樣總結；glossary 更名不在這條線上。
 
-> **這篇怎麼讀**：除特別標明外，文中的做法與看法都是 Matt 在影片裡的自述。官方 repo 的內容會標明是官方文件。時間點可跳到影片對應位置（取自字幕檔，與播放位置可能略有出入）。逐字稿是自動轉寫，專有名詞已校正。影片結尾他推薦自己在 aihero.dev 開的 AI coding 課程（[00:14:12](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=852s)），這是商業利益，讀的時候請留意。
+> **這篇怎麼讀**：除特別標明外，文中的做法與看法都是 Matt 在影片裡的自述，官方 repo 的內容會標明。時間點可跳到影片對應位置（取自字幕檔，可能略有出入）。逐字稿是自動轉寫，專有名詞已校正。影片結尾他推薦自己在 aihero.dev 開的 AI coding 課程（[00:14:12](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=852s)），這是商業利益，請留意。
 
 ## 這是誰的 skill，這次發了什麼
 
@@ -26,9 +26,9 @@ Matt Pocock 的 [GitHub 個人頁](https://github.com/mattpocock)自述是「Typ
 
 ## 一、implement-spec：誰來顧那個迴圈
 
-先看 Matt 的前提。他處理大工作的方式分兩層：一份 spec 說明要去哪裡，一組 ticket 把路線切成能在單一 coding agent 裡跑完的小段。全塞給同一個 agent，會進入他說的 dumb zone，可能碰到 auto compact。他承認 auto compact 愈來愈好，但還是覺得拆 ticket 比較乾淨（[00:00:54](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=54s)）。
+Matt 處理大工作的方式分兩層：一份 spec 說明要去哪裡，一組 ticket 把路線切成能在單一 coding agent 裡跑完的小段。全塞給同一個 agent，會進入他說的 dumb zone，可能碰到 auto compact。他承認 auto compact 愈來愈好，但還是覺得拆 ticket 比較乾淨（[00:00:54](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=54s)）。
 
-接下來才是這支影片在 implement-spec 上真正的問題：ticket 切好了，誰負責一張一張派出去？他列了三種做法，這裡整理成表（編者整理，並非講者原圖）：
+ticket 切好之後，誰負責一張一張派出去？他列了三種做法，這裡整理成表（編者整理，並非講者原圖）：
 
 | 做法 | 誰顧迴圈 | Matt 的評價 |
 |---|---|---|
@@ -52,6 +52,8 @@ Matt Pocock 的 [GitHub 個人頁](https://github.com/mattpocock)自述是「Typ
 
 這個 skill 要使用者手動呼叫，不會被模型自動觸發。
 
+![implement-spec 的流程：spec 與 tickets 組成 task graph，frontier 上已可開工的 ticket 交給各自在獨立 worktree 的 implementer sub-agent，用 tdd 實作；merger sub-agent 把成果併入同一條 integration branch，再做 code-review；draft PR 視情況才開。](images/figs/fig_spec_16x9.png "導讀示意圖｜implement-spec 的流程（依官方 SKILL.md 整理）")
+
 有一處口述和官方不同。Matt 在影片裡說，最後會得到「一個 PR」，並把它標成 ready for review（[00:04:18](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=258s)）。官方文件現在寫的是，目標是單一 integration branch：issue tracker 靠 PR 結案、或使用者要求時，才在第一次 merge 後開 draft PR；沒有 PR，就依 tracker 的方式結案並回報分支。v1.3.0 的 release 說明直接寫著 "The goal is now the integration branch, not a PR"。使用時以官方文件為準。
 
 他最後補了兩句。這個 skill 他用的頻率比預期高，尤其在還沒建好 deterministic script、沒把「軟體工廠」調好的專案上（[00:04:23](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=263s)）。而它只是一個基本版本，stacked PR 之類的做法都可以自己換（[00:04:41](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=281s)）。
@@ -66,6 +68,8 @@ Matt 認為，PR 仍然是工作進入 main 的主要瓶頸，所以 `pr` 這個
 2. **Evidence**：改動前後的對照，可以是截圖、輸出、或從失敗變成通過的測試。
 3. **Merge Danger**：Door 欄位標出這個 PR 是單向門還是雙向門，可附說明；Blast Radius 欄位官方要求用一個詞形容，另可補充可能的後果。
 
+![pr 的 PR body 模板：Summary 挑最小而足以說明重點的呈現方式（pseudocode、call tree、component tree、file tree、Mermaid 或 diff）；Evidence 放改動前後的對照；Merge Danger 標單向門或雙向門，並用一個詞描述 Blast Radius。](images/figs/fig_pr_16x9.png "導讀示意圖｜pr 的模板（依官方 SKILL.md 整理）")
+
 Matt 說 Evidence 是學會信任 agent 輸出的關鍵（[00:05:55](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=355s)）。他的觀察是，要求 agent 拿出證據，常常讓它多跑一次測試，或在環境允許時多截一張圖，帶回執行期的資訊，證明改動真的在做它以為自己在做的事。不要求的話，agent 很容易回一句「這應該行，因為我讀過程式碼了」（[00:06:15](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=375s)）。他接著說，自己愈來愈著迷於「驗證」這件事，尤其是最近和 Lauren（Lauren Tan，即 Poteto）的那場訪談之後（[00:06:22](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=382s)）。那場訪談影片在[這裡](https://www.youtube.com/watch?v=MN9dGgmLyso)。
 
 門的比喻用來決定審查要用多大力氣。雙向門是能輕易退回的改動；單向門會對外界造成影響，例如刪資料，或還原代價很高。Blast radius 小的雙向門，他說真的不必審得太用力。他還說，這一段放在 PR 底部，大概是審查的人第一或第二個會看的東西，所以很重要（[00:06:59](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=419s)）。
@@ -76,7 +80,7 @@ Matt 說 Evidence 是學會信任 agent 輸出的關鍵（[00:05:55](https://www
 
 ## 三、CONTEXT.md 改名 GLOSSARY.md
 
-`domain-modeling` 這類 skill 原本寫入 `CONTEXT.md`，名字來自 DDD 的 bounded context 概念，靈感源自 Eric Evans 的《Domain-Driven Design》。Matt 說他現在不太走 DDD 那套流程（他說自己實際上仍用 DDD，只是不掛名），而 context 這個詞太籠統：不容易讓 agent 在對的時機把它讀進來，對使用者也很混淆。加上檔案裡的內容最後只剩詞彙表，所以乾脆叫詞彙表（[00:08:25](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=505s)）。
+`domain-modeling` 這類 skill 原本寫入 `CONTEXT.md`，名字來自 DDD 的 bounded context 概念，靈感源自 Eric Evans 的《Domain-Driven Design》。Matt 說他現在不太走 DDD 那套流程，實際上仍在用，只是不掛名。而 context 這個詞太籠統：不容易讓 agent 在對的時機把它讀進來，對使用者也很混淆。加上檔案裡的內容最後只剩詞彙表，所以乾脆叫詞彙表（[00:08:25](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=505s)）。
 
 官方 release 說明列得比影片細：改名不只 `CONTEXT.md`，連 `CONTEXT-MAP.md` 也改為 `GLOSSARY-MAP.md`，而且檔名是大寫的 `GLOSSARY.md`；影響到 `domain-modeling`、`grill-with-docs`、`tdd`、`triage`、`pr` 等多個 skill。已有舊檔的人，必須自己 `git mv` 成新名稱，因為 skill 之後只找 `GLOSSARY.md`。Matt 在影片裡也提醒，很多 skill 靠這個檔案才能用對的領域語言，所以一定要更新（[00:09:19](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=559s)）。順帶一提，前面的 `pr` skill 就規定要用 `GLOSSARY.md` 裡的使用者領域語言寫 PR。
 
@@ -98,16 +102,18 @@ Matt 說 Evidence 是學會信任 agent 輸出的關鍵（[00:05:55](https://www
 
 對機械性的違規，官方建議優先建立 deterministic 檢查（linter 規則、pre-commit hook、CI），`CODING_STANDARDS.md` 只留給真正要判斷的事。完全沒有 guardrail 的 repo，本身就算一項發現。
 
+![retro 的流程：另一個 agent 回頭讀 session 紀錄，依七個檢查面向找出候選項，依嚴重度排序後由人判斷輕重，不要全自動。](images/figs/fig_retro_16x9.png "導讀示意圖｜retro 的流程（依官方 SKILL.md 與影片整理）")
+
 Matt 在自己專案跑出來的結果，影片裡唸了這幾項（[00:11:19](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=679s) 起）：
 
-- agent 在使用者選定修法之前，就執行了不可逆的公開動作，也就是開頭那個 release。
+- 開頭那個 release：agent 在使用者選定修法之前，就執行了不可逆的公開動作。
 - repo 裡有 pnpm check 腳本，但沒有任何東西去執行它，建議加 CI。
 - 長 session 經過 compaction 後 context 遺失；他用 animatic 做影片草稿，建議把重複的指令搬進 animatic skill。這條他說一定會做。
 - 他為課程影片管理系統做的自製 CLI 浪費 token，另一個 `wiki` CLI 不在本機 PATH 上。
 
 關於 release 那條，影片裡有個細節和現況對不上。Matt 說，現在去看 release 列表，只有 1.3.1，沒有 1.3.0（[00:11:30](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=690s)）。但本文撰寫時，官方 release 列表同時有 v1.3.0 與 v1.3.1，時間只差約一分鐘，v1.3.1 多了一條針對 `ask-matt` 的修正。逐字稿沒有說明原因。
 
-對這份清單，他的態度是要自己判斷。retro 把開頭那個 release 列為最嚴重，但他說其實沒那麼糟：只是一個 release，隨時能補（[00:12:41](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=761s)）。所以 retro 的設計是讓人參與判斷（human in the loop），他的原話是大家看了都想自動化，「No, you don't want to automate this」。理由是自動化會讓 agent 陷入一個迴圈：不斷找出誤報，不斷試著修，最後把 repo 與 agent 帶往不該去的方向（[00:12:58](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=778s)）。他建議的用法是抽樣：想到好一陣子沒跑，就挑幾個最近的 session，特別是出過怪事的那幾個（[00:13:16](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=796s)）。
+retro 把開頭那個 release 列為最嚴重，他自己判斷其實沒那麼糟，所以 retro 的設計是讓人參與判斷（human in the loop）。他說大家看了都想自動化（[00:12:54](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=774s)），他的原話是「No, you don't want to automate this」。理由是自動化會讓 agent 陷入一個迴圈：不斷找出誤報，不斷試著修，最後把 repo 與 agent 帶往不該去的方向（[00:12:58](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=778s)）。他建議的用法是抽樣：想到好一陣子沒跑，就挑幾個最近的 session，特別是出過怪事的那幾個（[00:13:16](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=796s)）。
 
 這個「不要自動化」是他本人的建議；官方 SKILL.md 的最後一步是「依嚴重度把候選項呈現給使用者」，沒有任何字句禁止自動化。他還說，定期跑 retro 之後，自己的 token 效率與產出品質都大幅提升（[00:14:04](https://www.youtube.com/watch?v=BsJGo1wFTvQ&t=844s)），沒有附數據。
 

@@ -89,16 +89,16 @@ footer{max-width:720px;margin:0 auto;padding:0 16px 48px;color:var(--muted);font
 <nav class="toc" aria-label="章節導覽"><div class="inner"><a href="#s1">版本</a><a href="#s2">implement-spec</a><a href="#s3">pr</a><a href="#s4">GLOSSARY</a><a href="#s5">retro</a><a href="#s6">結論</a><a href="#s7">來源</a></div></nav>
 <main id="content">
 <p>Matt Pocock 在影片後半段，把新做好的 <code>/retro</code> 對準自己的一個 repo 跑。清單最上面的發現是：他的 agent 查出 1.3.0 這個 release 為什麼缺漏，接著沒有先問他，就直接發了一個（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=679s">00:11:19</a>）。他說這件事他不太在意，隨時可以再切新的 release（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=761s">00:12:41</a>）。</p>
-<p>一個工具挖出「agent 沒問就做了不可逆的事」，使用者看過後判斷「這個無所謂」。編者讀這支影片時，覺得三個新 skill 都落在同一個環節：agent 做完事情之後，人要怎麼接手。implement-spec 管一大批 ticket 做完後的收斂，pr 管審查，retro 管事後回顧。這是編者的讀法，講者沒有這樣總結，glossary 更名也另是一回事。</p>
+<p>編者讀這支影片，覺得三個新 skill 都落在同一個環節：agent 做完事情之後，人要怎麼接手。implement-spec 收斂一大批 ticket 的成果，pr 決定交給人審的時候看到什麼，retro 則是做完之後再叫另一個 agent 回頭檢討。這是編者的讀法，講者沒有這樣總結；glossary 更名不在這條線上。</p>
 <blockquote>
-<p><strong>這篇怎麼讀</strong>：除特別標明外，文中的做法與看法都是 Matt 在影片裡的自述。官方 repo 的內容會標明是官方文件。時間點可跳到影片對應位置（取自字幕檔，與播放位置可能略有出入）。逐字稿是自動轉寫，專有名詞已校正。影片結尾他推薦自己在 aihero.dev 開的 AI coding 課程（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=852s">00:14:12</a>），這是商業利益，讀的時候請留意。</p>
+<p><strong>這篇怎麼讀</strong>：除特別標明外，文中的做法與看法都是 Matt 在影片裡的自述，官方 repo 的內容會標明。時間點可跳到影片對應位置（取自字幕檔，可能略有出入）。逐字稿是自動轉寫，專有名詞已校正。影片結尾他推薦自己在 aihero.dev 開的 AI coding 課程（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=852s">00:14:12</a>），這是商業利益，請留意。</p>
 </blockquote>
 <h2 id="s1">這是誰的 skill，這次發了什麼</h2>
 <p>Matt Pocock 的 <a rel="noopener noreferrer" target="_blank" href="https://github.com/mattpocock">GitHub 個人頁</a>自述是「TypeScript wizard」，正在做 Total TypeScript（一門 TypeScript 課程），曾任職 Vercel 與 Stately。他的 <a rel="noopener noreferrer" target="_blank" href="https://github.com/mattpocock/skills">skills repo</a> 副標是「Skills for Real Engineers. Straight from my .agents directory.」，也就是他自己平常給 coding agent 用的 skill 直接公開。</p>
 <p>官方 release 列表上，<a rel="noopener noreferrer" target="_blank" href="https://github.com/mattpocock/skills/releases/tag/v1.3.0">v1.3.0</a> 發在 2026 年 10 月 4 日，影片隔天上線。三個 skill 一次「畢業」進 Engineering 分類：<code>implement-spec</code>、<code>pr</code>、<code>retro</code>。另外還有 <code>CONTEXT.md</code> 改名為 <code>GLOSSARY.md</code> 的更動。</p>
 <h2 id="s2">一、implement-spec：誰來顧那個迴圈</h2>
-<p>先看 Matt 的前提。他處理大工作的方式分兩層：一份 spec 說明要去哪裡，一組 ticket 把路線切成能在單一 coding agent 裡跑完的小段。全塞給同一個 agent，會進入他說的 dumb zone，可能碰到 auto compact。他承認 auto compact 愈來愈好，但還是覺得拆 ticket 比較乾淨（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=54s">00:00:54</a>）。</p>
-<p>接下來才是這支影片在 implement-spec 上真正的問題：ticket 切好了，誰負責一張一張派出去？他列了三種做法，這裡整理成表（編者整理，並非講者原圖）：</p>
+<p>Matt 處理大工作的方式分兩層：一份 spec 說明要去哪裡，一組 ticket 把路線切成能在單一 coding agent 裡跑完的小段。全塞給同一個 agent，會進入他說的 dumb zone，可能碰到 auto compact。他承認 auto compact 愈來愈好，但還是覺得拆 ticket 比較乾淨（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=54s">00:00:54</a>）。</p>
+<p>ticket 切好之後，誰負責一張一張派出去？他列了三種做法，這裡整理成表（編者整理，並非講者原圖）：</p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="比較表，可左右捲動"><table>
 <thead>
 <tr>
@@ -139,6 +139,7 @@ footer{max-width:720px;margin:0 auto;padding:0 16px 48px;color:var(--muted);font
 <li>清掉所有 worktree。</li>
 </ol>
 <p>這個 skill 要使用者手動呼叫，不會被模型自動觸發。</p>
+<figure class="section-figure"><picture><source media="(max-width: 640px)" srcset="images/web/figs/fig_spec_9x16.webp"><img src="images/web/figs/fig_spec_16x9.webp" alt="implement-spec 的流程：spec 與 tickets 組成 task graph，frontier 上已可開工的 ticket 交給各自在獨立 worktree 的 implementer sub-agent，用 tdd 實作；merger sub-agent 把成果併入同一條 integration branch，再做 code-review；draft PR 視情況才開。" tabindex="0" role="button" aria-label="放大圖片：implement-spec 的流程：s"></picture><figcaption>導讀示意圖｜implement-spec 的流程（依官方 SKILL.md 整理）</figcaption></figure>
 <p>有一處口述和官方不同。Matt 在影片裡說，最後會得到「一個 PR」，並把它標成 ready for review（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=258s">00:04:18</a>）。官方文件現在寫的是，目標是單一 integration branch：issue tracker 靠 PR 結案、或使用者要求時，才在第一次 merge 後開 draft PR；沒有 PR，就依 tracker 的方式結案並回報分支。v1.3.0 的 release 說明直接寫著 "The goal is now the integration branch, not a PR"。使用時以官方文件為準。</p>
 <p>他最後補了兩句。這個 skill 他用的頻率比預期高，尤其在還沒建好 deterministic script、沒把「軟體工廠」調好的專案上（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=263s">00:04:23</a>）。而它只是一個基本版本，stacked PR 之類的做法都可以自己換（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=281s">00:04:41</a>）。</p>
 <h2 id="s3">二、pr：先給圖，再給證據，最後標風險</h2>
@@ -149,12 +150,13 @@ footer{max-width:720px;margin:0 auto;padding:0 16px 48px;color:var(--muted);font
 <li><strong>Evidence</strong>：改動前後的對照，可以是截圖、輸出、或從失敗變成通過的測試。</li>
 <li><strong>Merge Danger</strong>：Door 欄位標出這個 PR 是單向門還是雙向門，可附說明；Blast Radius 欄位官方要求用一個詞形容，另可補充可能的後果。</li>
 </ol>
+<figure class="section-figure"><picture><source media="(max-width: 640px)" srcset="images/web/figs/fig_pr_9x16.webp"><img src="images/web/figs/fig_pr_16x9.webp" alt="pr 的 PR body 模板：Summary 挑最小而足以說明重點的呈現方式（pseudocode、call tree、component tree、file tree、Mermaid 或 diff）；Evidence 放改動前後的對照；Merge Danger 標單向門或雙向門，並用一個詞描述 Blast Radius。" tabindex="0" role="button" aria-label="放大圖片：pr 的 PR body 模板：Summ"></picture><figcaption>導讀示意圖｜pr 的模板（依官方 SKILL.md 整理）</figcaption></figure>
 <p>Matt 說 Evidence 是學會信任 agent 輸出的關鍵（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=355s">00:05:55</a>）。他的觀察是，要求 agent 拿出證據，常常讓它多跑一次測試，或在環境允許時多截一張圖，帶回執行期的資訊，證明改動真的在做它以為自己在做的事。不要求的話，agent 很容易回一句「這應該行，因為我讀過程式碼了」（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=375s">00:06:15</a>）。他接著說，自己愈來愈著迷於「驗證」這件事，尤其是最近和 Lauren（Lauren Tan，即 Poteto）的那場訪談之後（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=382s">00:06:22</a>）。那場訪談影片在<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=MN9dGgmLyso">這裡</a>。</p>
 <p>門的比喻用來決定審查要用多大力氣。雙向門是能輕易退回的改動；單向門會對外界造成影響，例如刪資料，或還原代價很高。Blast radius 小的雙向門，他說真的不必審得太用力。他還說，這一段放在 PR 底部，大概是審查的人第一或第二個會看的東西，所以很重要（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=419s">00:06:59</a>）。</p>
 <p>他展示了自己 repo 裡一個由這個 skill 產生的 PR：把兩個本質相同的演算法合併成一個（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=436s">00:07:16</a>）。PR 裡有刪除與新增的檔案、呼叫關係，以及一個真實案例的前後對照：改動前沒有開場介紹，改動後有，這也是他要的行為變更（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=450s">00:07:30</a>）。Merge danger 標為雙向門，blast radius 小。</p>
 <p>這個 skill 是模型自動觸發的類型。Matt 說它是他見過最穩定被自動呼叫的 skill 之一，至少在 Opus 5.5 上，似乎每次都會觸發（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=479s">00:07:59</a>）。這是他個人的使用觀察，其他模型或環境未必如此。他的建議很直接：已經有自己的 PR body skill，也可以從這個偷點東西走。</p>
 <h2 id="s4">三、CONTEXT.md 改名 GLOSSARY.md</h2>
-<p><code>domain-modeling</code> 這類 skill 原本寫入 <code>CONTEXT.md</code>，名字來自 DDD 的 bounded context 概念，靈感源自 Eric Evans 的《Domain-Driven Design》。Matt 說他現在不太走 DDD 那套流程（他說自己實際上仍用 DDD，只是不掛名），而 context 這個詞太籠統：不容易讓 agent 在對的時機把它讀進來，對使用者也很混淆。加上檔案裡的內容最後只剩詞彙表，所以乾脆叫詞彙表（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=505s">00:08:25</a>）。</p>
+<p><code>domain-modeling</code> 這類 skill 原本寫入 <code>CONTEXT.md</code>，名字來自 DDD 的 bounded context 概念，靈感源自 Eric Evans 的《Domain-Driven Design》。Matt 說他現在不太走 DDD 那套流程，實際上仍在用，只是不掛名。而 context 這個詞太籠統：不容易讓 agent 在對的時機把它讀進來，對使用者也很混淆。加上檔案裡的內容最後只剩詞彙表，所以乾脆叫詞彙表（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=505s">00:08:25</a>）。</p>
 <p>官方 release 說明列得比影片細：改名不只 <code>CONTEXT.md</code>，連 <code>CONTEXT-MAP.md</code> 也改為 <code>GLOSSARY-MAP.md</code>，而且檔名是大寫的 <code>GLOSSARY.md</code>；影響到 <code>domain-modeling</code>、<code>grill-with-docs</code>、<code>tdd</code>、<code>triage</code>、<code>pr</code> 等多個 skill。已有舊檔的人，必須自己 <code>git mv</code> 成新名稱，因為 skill 之後只找 <code>GLOSSARY.md</code>。Matt 在影片裡也提醒，很多 skill 靠這個檔案才能用對的領域語言，所以一定要更新（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=559s">00:09:19</a>）。順帶一提，前面的 <code>pr</code> skill 就規定要用 <code>GLOSSARY.md</code> 裡的使用者領域語言寫 PR。</p>
 <h2 id="s5">四、retro：叫另一個 agent 回頭看這一個</h2>
 <p><code>retro</code> 的起點，是他覺得自己的 skill 組合把太多工作丟給使用者：維護 <code>AGENTS.md</code>、維護 skill、讓 repo 省 token、讓環境對 agent 安全、設好 lint 與導覽（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=586s">00:09:46</a>）。他自己平常就在替 repo 做這些事，於是把它包成一個 skill。retro 是 retrospective 的簡稱，可以對目前的 session、前一個、或一批 session 執行。官方文件說明，它建議改善的是 agent 的工作環境，不是程式碼本身。</p>
@@ -170,15 +172,16 @@ footer{max-width:720px;margin:0 auto;padding:0 16px 48px;color:var(--muted);font
 <li>資訊取得：agent 缺不缺關鍵資訊。</li>
 </ol>
 <p>對機械性的違規，官方建議優先建立 deterministic 檢查（linter 規則、pre-commit hook、CI），<code>CODING_STANDARDS.md</code> 只留給真正要判斷的事。完全沒有 guardrail 的 repo，本身就算一項發現。</p>
+<figure class="section-figure"><picture><source media="(max-width: 640px)" srcset="images/web/figs/fig_retro_9x16.webp"><img src="images/web/figs/fig_retro_16x9.webp" alt="retro 的流程：另一個 agent 回頭讀 session 紀錄，依七個檢查面向找出候選項，依嚴重度排序後由人判斷輕重，不要全自動。" tabindex="0" role="button" aria-label="放大圖片：retro 的流程：另一個 agent "></picture><figcaption>導讀示意圖｜retro 的流程（依官方 SKILL.md 與影片整理）</figcaption></figure>
 <p>Matt 在自己專案跑出來的結果，影片裡唸了這幾項（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=679s">00:11:19</a> 起）：</p>
 <ul>
-<li>agent 在使用者選定修法之前，就執行了不可逆的公開動作，也就是開頭那個 release。</li>
+<li>開頭那個 release：agent 在使用者選定修法之前，就執行了不可逆的公開動作。</li>
 <li>repo 裡有 pnpm check 腳本，但沒有任何東西去執行它，建議加 CI。</li>
 <li>長 session 經過 compaction 後 context 遺失；他用 animatic 做影片草稿，建議把重複的指令搬進 animatic skill。這條他說一定會做。</li>
 <li>他為課程影片管理系統做的自製 CLI 浪費 token，另一個 <code>wiki</code> CLI 不在本機 PATH 上。</li>
 </ul>
 <p>關於 release 那條，影片裡有個細節和現況對不上。Matt 說，現在去看 release 列表，只有 1.3.1，沒有 1.3.0（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=690s">00:11:30</a>）。但本文撰寫時，官方 release 列表同時有 v1.3.0 與 v1.3.1，時間只差約一分鐘，v1.3.1 多了一條針對 <code>ask-matt</code> 的修正。逐字稿沒有說明原因。</p>
-<p>對這份清單，他的態度是要自己判斷。retro 把開頭那個 release 列為最嚴重，但他說其實沒那麼糟：只是一個 release，隨時能補（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=761s">00:12:41</a>）。所以 retro 的設計是讓人參與判斷（human in the loop），他的原話是大家看了都想自動化，「No, you don't want to automate this」。理由是自動化會讓 agent 陷入一個迴圈：不斷找出誤報，不斷試著修，最後把 repo 與 agent 帶往不該去的方向（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=778s">00:12:58</a>）。他建議的用法是抽樣：想到好一陣子沒跑，就挑幾個最近的 session，特別是出過怪事的那幾個（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=796s">00:13:16</a>）。</p>
+<p>retro 把開頭那個 release 列為最嚴重，他自己判斷其實沒那麼糟，所以 retro 的設計是讓人參與判斷（human in the loop）。他說大家看了都想自動化（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=774s">00:12:54</a>），他的原話是「No, you don't want to automate this」。理由是自動化會讓 agent 陷入一個迴圈：不斷找出誤報，不斷試著修，最後把 repo 與 agent 帶往不該去的方向（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=778s">00:12:58</a>）。他建議的用法是抽樣：想到好一陣子沒跑，就挑幾個最近的 session，特別是出過怪事的那幾個（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=796s">00:13:16</a>）。</p>
 <p>這個「不要自動化」是他本人的建議；官方 SKILL.md 的最後一步是「依嚴重度把候選項呈現給使用者」，沒有任何字句禁止自動化。他還說，定期跑 retro 之後，自己的 token 效率與產出品質都大幅提升（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=844s">00:14:04</a>），沒有附數據。</p>
 <h2 id="s6">重點結論與實際啟示</h2>
 <p>以下是編者整理，依據都來自上面各節，不是講者的原話。</p>
