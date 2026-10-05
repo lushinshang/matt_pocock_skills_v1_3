@@ -4,7 +4,9 @@ Matt Pocock 在影片 "New Skills! v1.3 brings /pr, /implement-spec, and /retro"
 
 ## 200字介紹
 
-Matt Pocock 讓新做的 /retro 去讀自己的 agent 工作紀錄，結果它抓到 agent 沒問就發了 release。他看完說無所謂，還要大家別把 retro 全自動，輕重留給人判斷。這支 v1.3 影片另介紹 implement-spec、pr 兩個新 skill 與 GLOSSARY.md 改名。導讀對照官方文件，標出他口述與官方不一致之處，例如 implement-spec 的終點不一定是 PR。
+Matt Pocock 把新做的 /retro 丟到自己的 repo 跑，第一條發現：他的 agent 查 release 為什麼缺漏，然後沒問他就直接發了一個。他看完只說：這個無所謂。
+
+v1.3 的三個新 skill 都在處理「agent 做完之後，人怎麼接手」：implement-spec 收斂成一條 integration branch，pr 用單向門或雙向門決定要審多用力，retro 回頭讀 agent 的紀錄，找出環境該改哪裡。但他要大家別全自動，輕重由人判斷。
 
 ## 檔案
 
