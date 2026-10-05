@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>讓 agent 做完之後交得出手：Matt Pocock Skills v1.3 導讀</title>
+<meta name="description" content="Matt Pocock 的 Skills v1.3 帶來 implement-spec、pr、retro 三個新 skill 與 GLOSSARY.md 更名。依影片與官方文件，整理各自做什麼，以及口述與官方文件不一致之處。">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:title" content="讓 agent 做完之後交得出手：Matt Pocock Skills v1.3 導讀">
+<meta property="og:description" content="Matt Pocock 的 Skills v1.3 帶來 implement-spec、pr、retro 三個新 skill 與 GLOSSARY.md 更名。依影片與官方文件，整理各自做什麼，以及口述與官方文件不一致之處。">
+<meta property="og:url" content="https://lushinshang.github.io/matt_pocock_skills_v1_3/">
+<meta property="og:image" content="https://lushinshang.github.io/matt_pocock_skills_v1_3/images/hero/og_1200x630.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Skills v1.3 導讀：implement-spec、pr、retro">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://lushinshang.github.io/matt_pocock_skills_v1_3/images/hero/og_1200x630.png">
+<style>
+:root{--bg:#f9f7f4;--fg:#1a1a1a;--muted:#5b5852;--card:#ffffff;--line:#e3dfd8;--accent:#8a4b12;--accent-bg:#f3e9dc;--link:#8a4b12;--th:#efeae2}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17161a;--fg:#ece9e4;--muted:#b3aea6;--card:#201f24;--line:#37353c;--accent:#e2a56a;--accent-bg:#2b241c;--link:#e2a56a;--th:#2a282f}}
+:root[data-theme="dark"]{--bg:#17161a;--fg:#ece9e4;--muted:#b3aea6;--card:#201f24;--line:#37353c;--accent:#e2a56a;--accent-bg:#2b241c;--link:#e2a56a;--th:#2a282f}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;font-size:17px;line-height:1.8;letter-spacing:0;-webkit-text-size-adjust:100%}
+.skip{position:absolute;left:-999px;top:8px;background:var(--fg);color:var(--bg);padding:8px 12px;border-radius:6px;z-index:100}
+.skip:focus{left:8px}
+header.hero{max-width:720px;margin:0 auto;padding:56px 16px 24px;text-align:center}
+.eyebrow{color:var(--accent);font-size:.9rem;font-weight:700;margin:0 0 12px}
+.hero h1{font-size:clamp(1.8rem,4.4vw,2.8rem);line-height:1.3;margin:0 0 14px;text-wrap:balance}
+.hero .sub{color:var(--muted);font-size:1.1rem;margin:0 0 10px}
+.hero .meta{color:var(--muted);font-size:.9rem;margin:0}
+nav.toc{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+nav.toc .inner{max-width:720px;margin:0 auto;display:flex;gap:4px;overflow-x:auto;padding:0 16px;height:52px;align-items:center;scrollbar-width:thin}
+nav.toc a{flex:0 0 auto;padding:10px 12px;color:var(--muted);text-decoration:none;font-size:.92rem;border-radius:8px;min-height:44px;display:inline-flex;align-items:center}
+nav.toc a:hover{color:var(--fg);background:var(--accent-bg)}
+main{max-width:720px;margin:0 auto;padding:24px 16px 72px}
+h2{font-size:clamp(1.35rem,3vw,1.7rem);line-height:1.4;margin:2.6em 0 .8em;text-wrap:balance;border-left:5px solid var(--accent);padding-left:14px;margin-left:-19px}
+h3{font-size:1.15rem;margin:2em 0 .6em}
+p{margin:0 0 1.1em;overflow-wrap:anywhere}
+a{color:var(--link);text-underline-offset:3px}
+a:focus-visible,.table-wrap:focus-visible,nav.toc a:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+blockquote{margin:1.4em 0;padding:14px 18px;background:var(--accent-bg);border-radius:10px;color:var(--fg)}
+blockquote p{margin:0}
+ul,ol{padding-left:1.3em;margin:0 0 1.2em}
+li{margin:.45em 0;overflow-wrap:anywhere}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;background:var(--accent-bg);padding:.1em .35em;border-radius:5px;overflow-wrap:anywhere}
+.table-wrap{overflow-x:auto;margin:1.4em 0;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:.93rem;line-height:1.6}
+th,td{padding:10px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--th);font-weight:700}
+tr:last-child td{border-bottom:0}
+strong{font-weight:700}
+figure.diagram{margin:28px 0;padding:16px;background:var(--card);border:1px solid var(--line);border-radius:12px}
+figure.diagram pre.mermaid{margin:0;text-align:center;overflow-x:auto}
+html:not(.mermaid-ok) figure.diagram pre.mermaid{position:absolute;left:-9999px;top:0;width:1000px}
+figure.diagram svg{max-width:100%;height:auto}
+.diagram-fallback{font-size:.95rem}
+html.mermaid-ok .diagram-fallback{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+figure.section-figure{margin:32px 0}
+figure.hero-figure{margin:24px auto 8px;max-width:720px}
+figure.section-figure img,figure.hero-figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.08);background:var(--card);cursor:zoom-in}
+figure img:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.lightbox{display:none;position:fixed;inset:0;z-index:200;background:rgba(20,18,14,.9);align-items:center;justify-content:center;padding:24px}
+.lightbox.is-open{display:flex}
+.lightbox img{max-width:96vw;max-height:90vh;width:auto;height:auto;border-radius:8px;box-shadow:0 12px 48px rgba(0,0,0,.5);background:#fff;cursor:zoom-out}
+.lightbox button{position:absolute;top:14px;right:14px;min-width:44px;min-height:44px;padding:8px 14px;border:0;border-radius:999px;background:#fff;color:#222;font-size:15px;cursor:pointer}
+.lightbox button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+figcaption{margin:12px auto 0;font-size:14px;line-height:1.6;color:var(--muted);text-align:center}
+footer{max-width:720px;margin:0 auto;padding:0 16px 48px;color:var(--muted);font-size:.85rem}
+@media (max-width:640px){body{font-size:16px}figure.section-figure img,figure.hero-figure img{aspect-ratio:9/16}figure.hero-figure{max-width:360px}header.hero{padding-top:36px;text-align:left}h2{margin-left:0;padding-left:12px}figure.diagram{padding:10px}
+.table-wrap table{min-width:0}.table-wrap thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.table-wrap tr,.table-wrap td{display:block}.table-wrap tr{padding:10px 0;border-bottom:1px solid var(--line)}.table-wrap tr:last-child{border-bottom:0}
+.table-wrap td{border:0;padding:3px 12px}.table-wrap td::before{content:attr(data-label);display:block;font-size:.78rem;font-weight:700;color:var(--muted)}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<a class="skip" href="#content">跳到內文</a>
+<header class="hero">
+<p class="eyebrow">深度導讀</p>
+<h1>讓 agent 做完之後交得出手：Matt Pocock Skills v1.3 導讀</h1>
+<p class="sub">implement-spec、pr、retro 與 glossary 更名，四件事各自解決什麼</p>
+<p class="meta">2026-10-05 ・ 來源：<a href="https://www.youtube.com/watch?v=BsJGo1wFTvQ" target="_blank" rel="noopener noreferrer">New Skills! v1.3 brings /pr, /implement-spec, and /retro（Matt Pocock 頻道）</a></p>
+<figure class="hero-figure"><picture><source media="(max-width: 640px)" srcset="images/web/hero/hero_9x16.webp"><img src="images/web/hero/hero_16x9.webp" alt="全文一圖看懂：Matt Pocock Skills v1.3 的三個新 skill 與一次檔名更動。一、implement-spec：ticket 是 task graph，目標是單一 integration branch；二、pr：PR body 模板有 Summary、Evidence、Merge Danger 三段，其中 Merge Danger 含 Blast Radius 欄位；三、GLOSSARY.md：CONTEXT.md 改名，舊檔要用 git mv；四、retro：回頭看 session，建議改善 agent 的環境。最後提醒 retro 的清單由人判斷輕重。" tabindex="0" role="button" aria-label="放大圖片：全文一圖看懂"></picture><figcaption>導讀示意圖｜依影片與官方文件整理</figcaption></figure>
+</header>
+<nav class="toc" aria-label="章節導覽"><div class="inner"><a href="#s1">版本</a><a href="#s2">implement-spec</a><a href="#s3">pr</a><a href="#s4">GLOSSARY</a><a href="#s5">retro</a><a href="#s6">結論</a><a href="#s7">來源</a></div></nav>
+<main id="content">
+<p>Matt Pocock 在影片後半段，把新做好的 <code>/retro</code> 對準自己的一個 repo 跑。清單最上面的發現是：他的 agent 查出 1.3.0 這個 release 為什麼缺漏，接著沒有先問他，就直接發了一個（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=679s">00:11:19</a>）。他說這件事他不太在意，隨時可以再切新的 release（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=761s">00:12:41</a>）。</p>
+<p>一個工具挖出「agent 沒問就做了不可逆的事」，使用者看過後判斷「這個無所謂」。編者讀這支影片時，覺得三個新 skill 都落在同一個環節：agent 做完事情之後，人要怎麼接手。implement-spec 管一大批 ticket 做完後的收斂，pr 管審查，retro 管事後回顧。這是編者的讀法，講者沒有這樣總結，glossary 更名也另是一回事。</p>
+<blockquote>
+<p><strong>這篇怎麼讀</strong>：除特別標明外，文中的做法與看法都是 Matt 在影片裡的自述。官方 repo 的內容會標明是官方文件。時間點可跳到影片對應位置（取自字幕檔，與播放位置可能略有出入）。逐字稿是自動轉寫，專有名詞已校正。影片結尾他推薦自己在 aihero.dev 開的 AI coding 課程（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=852s">00:14:12</a>），這是商業利益，讀的時候請留意。</p>
+</blockquote>
+<h2 id="s1">這是誰的 skill，這次發了什麼</h2>
+<p>Matt Pocock 的 <a rel="noopener noreferrer" target="_blank" href="https://github.com/mattpocock">GitHub 個人頁</a>自述是「TypeScript wizard」，正在做 Total TypeScript（一門 TypeScript 課程），曾任職 Vercel 與 Stately。他的 <a rel="noopener noreferrer" target="_blank" href="https://github.com/mattpocock/skills">skills repo</a> 副標是「Skills for Real Engineers. Straight from my .agents directory.」，也就是他自己平常給 coding agent 用的 skill 直接公開。</p>
+<p>官方 release 列表上，<a rel="noopener noreferrer" target="_blank" href="https://github.com/mattpocock/skills/releases/tag/v1.3.0">v1.3.0</a> 發在 2026 年 10 月 4 日，影片隔天上線。三個 skill 一次「畢業」進 Engineering 分類：<code>implement-spec</code>、<code>pr</code>、<code>retro</code>。另外還有 <code>CONTEXT.md</code> 改名為 <code>GLOSSARY.md</code> 的更動。</p>
+<h2 id="s2">一、implement-spec：誰來顧那個迴圈</h2>
+<p>先看 Matt 的前提。他處理大工作的方式分兩層：一份 spec 說明要去哪裡，一組 ticket 把路線切成能在單一 coding agent 裡跑完的小段。全塞給同一個 agent，會進入他說的 dumb zone，可能碰到 auto compact。他承認 auto compact 愈來愈好，但還是覺得拆 ticket 比較乾淨（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=54s">00:00:54</a>）。</p>
+<p>接下來才是這支影片在 implement-spec 上真正的問題：ticket 切好了，誰負責一張一張派出去？他列了三種做法，這裡整理成表（編者整理，並非講者原圖）：</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="比較表，可左右捲動"><table>
+<thead>
+<tr>
+<th>做法</th>
+<th>誰顧迴圈</th>
+<th>Matt 的評價</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="做法">手動 loop</td>
+<td data-label="誰顧迴圈">使用者本人：做 ticket 1、等、清 context、再做 ticket 2</td>
+<td data-label="Matt 的評價">自己像個 for loop，"not really workable"（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=100s">00:01:40</a>）</td>
+</tr>
+<tr>
+<td data-label="做法">deterministic loop</td>
+<td data-label="誰顧迴圈">一支腳本，逐張讀 ticket 並呼叫 implement</td>
+<td data-label="Matt 的評價">每次跑法一致、可靠、便宜，他推薦大多數人用這個；但設定複雜、要很有耐心調整，他認為超出初學者範圍（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=109s">00:01:49</a>）</td>
+</tr>
+<tr>
+<td data-label="做法">implement-spec</td>
+<td data-label="誰顧迴圈">一個 agent 當協調者，用 sub-agent 實作每張 ticket</td>
+<td data-label="Matt 的評價">他想給初學者一個折衷：由 agent 代替人顧迴圈。他說這比 deterministic loop 差，因為不是每次都一樣；但是進入 AFK（人離開鍵盤）工作流程的好起點（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=188s">00:03:08</a>）</td>
+</tr>
+</tbody>
+</table></div>
+<p>第三種做法能成立，他說是因為最近才變得可行：sub-agent 現在也能再生 sub-agent，以前有點被削弱，現在能力與協調者相當（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=167s">00:02:47</a>）。這是他的說法。</p>
+<p>官方 <a rel="noopener noreferrer" target="_blank" href="https://github.com/mattpocock/skills/blob/main/skills/engineering/implement-spec/SKILL.md">SKILL.md</a> 的核心概念是，ticket 不是一串步驟，是帶有阻塞關係的 task graph，因此隨時有一批「已經可以開工」的 ticket（官方稱為 frontier）。流程共九步：</p>
+<ol>
+<li>讀 spec 與 ticket，弄清楚 task graph。</li>
+<li>可選：派探索 sub-agent 事先查資料，筆記存在 repo 之外。</li>
+<li>建 integration branch。</li>
+<li>每張 ticket 交給 implementer sub-agent，各自在獨立的 worktree 與分支，用 <code>tdd</code> 實作。</li>
+<li>做完的由 merger sub-agent 併入 integration branch。</li>
+<li>frontier 有變，就再派新的 implementer。</li>
+<li>全部完成後對 integration branch 跑 <code>code-review</code>，由單一 sub-agent 修掉問題。</li>
+<li>有 draft PR 就標為 ready for review；沒有就依 tracker 的方式結案，回報分支。</li>
+<li>清掉所有 worktree。</li>
+</ol>
+<p>這個 skill 要使用者手動呼叫，不會被模型自動觸發。</p>
+<p>有一處口述和官方不同。Matt 在影片裡說，最後會得到「一個 PR」，並把它標成 ready for review（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=258s">00:04:18</a>）。官方文件現在寫的是，目標是單一 integration branch：issue tracker 靠 PR 結案、或使用者要求時，才在第一次 merge 後開 draft PR；沒有 PR，就依 tracker 的方式結案並回報分支。v1.3.0 的 release 說明直接寫著 "The goal is now the integration branch, not a PR"。使用時以官方文件為準。</p>
+<p>他最後補了兩句。這個 skill 他用的頻率比預期高，尤其在還沒建好 deterministic script、沒把「軟體工廠」調好的專案上（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=263s">00:04:23</a>）。而它只是一個基本版本，stacked PR 之類的做法都可以自己換（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=281s">00:04:41</a>）。</p>
+<h2 id="s3">二、pr：先給圖，再給證據，最後標風險</h2>
+<p>Matt 認為，PR 仍然是工作進入 main 的主要瓶頸，所以 <code>pr</code> 這個 skill 的目標是讓人類審查盡可能輕鬆（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=328s">00:05:28</a>）。skill 本身只做一件事：提供 PR body 的模板。</p>
+<p>官方 <a rel="noopener noreferrer" target="_blank" href="https://github.com/mattpocock/skills/blob/main/skills/engineering/pr/SKILL.md">SKILL.md</a> 的模板只有三個標題，Merge Danger 底下再分兩個欄位：</p>
+<ol>
+<li><strong>Summary</strong>：用「最小而足以說明重點的呈現方式」。邏輯用 pseudocode，執行流程用 call tree，介面結構用 component tree，大範圍重構用淺層 file tree，另可用 Mermaid 或 diff。這個選單改編自 Dex Horthy 的 <code>show-me</code>，<a rel="noopener noreferrer" target="_blank" href="https://github.com/mattpocock/skills/blob/main/skills/engineering/pr/CREDITS.md">CREDITS.md</a> 說明是「幾乎逐字」複製進來，Matt 在影片裡也說自己是 Dex 的粉絲（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=302s">00:05:02</a>）。</li>
+<li><strong>Evidence</strong>：改動前後的對照，可以是截圖、輸出、或從失敗變成通過的測試。</li>
+<li><strong>Merge Danger</strong>：Door 欄位標出這個 PR 是單向門還是雙向門，可附說明；Blast Radius 欄位官方要求用一個詞形容，另可補充可能的後果。</li>
+</ol>
+<p>Matt 說 Evidence 是學會信任 agent 輸出的關鍵（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=355s">00:05:55</a>）。他的觀察是，要求 agent 拿出證據，常常讓它多跑一次測試，或在環境允許時多截一張圖，帶回執行期的資訊，證明改動真的在做它以為自己在做的事。不要求的話，agent 很容易回一句「這應該行，因為我讀過程式碼了」（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=375s">00:06:15</a>）。他接著說，自己愈來愈著迷於「驗證」這件事，尤其是最近和 Lauren（Lauren Tan，即 Poteto）的那場訪談之後（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=382s">00:06:22</a>）。那場訪談影片在<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=MN9dGgmLyso">這裡</a>。</p>
+<p>門的比喻用來決定審查要用多大力氣。雙向門是能輕易退回的改動；單向門會對外界造成影響，例如刪資料，或還原代價很高。Blast radius 小的雙向門，他說真的不必審得太用力。他還說，這一段放在 PR 底部，大概是審查的人第一或第二個會看的東西，所以很重要（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=419s">00:06:59</a>）。</p>
+<p>他展示了自己 repo 裡一個由這個 skill 產生的 PR：把兩個本質相同的演算法合併成一個（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=436s">00:07:16</a>）。PR 裡有刪除與新增的檔案、呼叫關係，以及一個真實案例的前後對照：改動前沒有開場介紹，改動後有，這也是他要的行為變更（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=450s">00:07:30</a>）。Merge danger 標為雙向門，blast radius 小。</p>
+<p>這個 skill 是模型自動觸發的類型。Matt 說它是他見過最穩定被自動呼叫的 skill 之一，至少在 Opus 5.5 上，似乎每次都會觸發（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=479s">00:07:59</a>）。這是他個人的使用觀察，其他模型或環境未必如此。他的建議很直接：已經有自己的 PR body skill，也可以從這個偷點東西走。</p>
+<h2 id="s4">三、CONTEXT.md 改名 GLOSSARY.md</h2>
+<p><code>domain-modeling</code> 這類 skill 原本寫入 <code>CONTEXT.md</code>，名字來自 DDD 的 bounded context 概念，靈感源自 Eric Evans 的《Domain-Driven Design》。Matt 說他現在不太走 DDD 那套流程（他說自己實際上仍用 DDD，只是不掛名），而 context 這個詞太籠統：不容易讓 agent 在對的時機把它讀進來，對使用者也很混淆。加上檔案裡的內容最後只剩詞彙表，所以乾脆叫詞彙表（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=505s">00:08:25</a>）。</p>
+<p>官方 release 說明列得比影片細：改名不只 <code>CONTEXT.md</code>，連 <code>CONTEXT-MAP.md</code> 也改為 <code>GLOSSARY-MAP.md</code>，而且檔名是大寫的 <code>GLOSSARY.md</code>；影響到 <code>domain-modeling</code>、<code>grill-with-docs</code>、<code>tdd</code>、<code>triage</code>、<code>pr</code> 等多個 skill。已有舊檔的人，必須自己 <code>git mv</code> 成新名稱，因為 skill 之後只找 <code>GLOSSARY.md</code>。Matt 在影片裡也提醒，很多 skill 靠這個檔案才能用對的領域語言，所以一定要更新（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=559s">00:09:19</a>）。順帶一提，前面的 <code>pr</code> skill 就規定要用 <code>GLOSSARY.md</code> 裡的使用者領域語言寫 PR。</p>
+<h2 id="s5">四、retro：叫另一個 agent 回頭看這一個</h2>
+<p><code>retro</code> 的起點，是他覺得自己的 skill 組合把太多工作丟給使用者：維護 <code>AGENTS.md</code>、維護 skill、讓 repo 省 token、讓環境對 agent 安全、設好 lint 與導覽（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=586s">00:09:46</a>）。他自己平常就在替 repo 做這些事，於是把它包成一個 skill。retro 是 retrospective 的簡稱，可以對目前的 session、前一個、或一批 session 執行。官方文件說明，它建議改善的是 agent 的工作環境，不是程式碼本身。</p>
+<p>讀真實 session 的好處，他說是能看到 agent 自己可能迴避不談的低效（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=651s">00:10:51</a>）。他在畫面上秀出 André Staltz（@andrestaltz）10 月 4 日的一則貼文（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=656s">00:10:56</a>）：<code>/retro</code> 是 game changer，自己的 agent 其實撞上各種沒被察覺的問題，但靠著 agentic cleverness and persistence，功能還是以某種方式做出來了，現在他可以從可靠的基礎重新出發。Matt 認為，agent 不像它該有的那樣會抱怨，也不會試著修自己的錯，所以得另找一個 agent 回頭看那些 session。</p>
+<p>官方 <a rel="noopener noreferrer" target="_blank" href="https://github.com/mattpocock/skills/blob/main/skills/engineering/retro/SKILL.md">SKILL.md</a> 列出七個檢查面向：</p>
+<ol>
+<li>導覽：agent 找檔案花多久、有沒有隱藏的相依。</li>
+<li>自動檢查：能不能用 lint、型別、測試抓到錯誤。</li>
+<li>coding standards：要不要給審查 agent 新規則。</li>
+<li>全域 <code>AGENTS.md</code> 的健康度。</li>
+<li>工具經濟：有沒有昂貴的呼叫，或耗 token 的自製工具。</li>
+<li>無效指令：steering 檔案裡不影響行為的句子。</li>
+<li>資訊取得：agent 缺不缺關鍵資訊。</li>
+</ol>
+<p>對機械性的違規，官方建議優先建立 deterministic 檢查（linter 規則、pre-commit hook、CI），<code>CODING_STANDARDS.md</code> 只留給真正要判斷的事。完全沒有 guardrail 的 repo，本身就算一項發現。</p>
+<p>Matt 在自己專案跑出來的結果，影片裡唸了這幾項（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=679s">00:11:19</a> 起）：</p>
+<ul>
+<li>agent 在使用者選定修法之前，就執行了不可逆的公開動作，也就是開頭那個 release。</li>
+<li>repo 裡有 pnpm check 腳本，但沒有任何東西去執行它，建議加 CI。</li>
+<li>長 session 經過 compaction 後 context 遺失；他用 animatic 做影片草稿，建議把重複的指令搬進 animatic skill。這條他說一定會做。</li>
+<li>他為課程影片管理系統做的自製 CLI 浪費 token，另一個 <code>wiki</code> CLI 不在本機 PATH 上。</li>
+</ul>
+<p>關於 release 那條，影片裡有個細節和現況對不上。Matt 說，現在去看 release 列表，只有 1.3.1，沒有 1.3.0（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=690s">00:11:30</a>）。但本文撰寫時，官方 release 列表同時有 v1.3.0 與 v1.3.1，時間只差約一分鐘，v1.3.1 多了一條針對 <code>ask-matt</code> 的修正。逐字稿沒有說明原因。</p>
+<p>對這份清單，他的態度是要自己判斷。retro 把開頭那個 release 列為最嚴重，但他說其實沒那麼糟：只是一個 release，隨時能補（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=761s">00:12:41</a>）。所以 retro 的設計是讓人參與判斷（human in the loop），他的原話是大家看了都想自動化，「No, you don't want to automate this」。理由是自動化會讓 agent 陷入一個迴圈：不斷找出誤報，不斷試著修，最後把 repo 與 agent 帶往不該去的方向（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=778s">00:12:58</a>）。他建議的用法是抽樣：想到好一陣子沒跑，就挑幾個最近的 session，特別是出過怪事的那幾個（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=796s">00:13:16</a>）。</p>
+<p>這個「不要自動化」是他本人的建議；官方 SKILL.md 的最後一步是「依嚴重度把候選項呈現給使用者」，沒有任何字句禁止自動化。他還說，定期跑 retro 之後，自己的 token 效率與產出品質都大幅提升（<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ&amp;t=844s">00:14:04</a>），沒有附數據。</p>
+<h2 id="s6">重點結論與實際啟示</h2>
+<p>以下是編者整理，依據都來自上面各節，不是講者的原話。</p>
+<ul>
+<li><strong>想試 implement-spec</strong>：先確認自己有 spec 和 ticket（官方說明它接在 <code>/to-spec</code> 與 <code>/to-tickets</code> 之後），並設好 issue tracker；沒設的話，skill 會叫你先跑 <code>/setup-matt-pocock-skills</code>。預期成果是一條 integration branch，PR 是視情況才有。</li>
+<li><strong>不想碰整套 skill</strong>：<code>pr</code> 的模板可以單獨借走，Summary、Evidence、Merge Danger（含 Blast Radius）這三段，用在自己的 PR 範本裡也成立。</li>
+<li><strong>用到 glossary 的 skill</strong>：升級後檢查舊的 <code>CONTEXT.md</code> 與 <code>CONTEXT-MAP.md</code>，用 <code>git mv</code> 改成大寫的新名稱，否則 skill 找不到。</li>
+<li><strong>跑 retro</strong>：定期抽樣來跑，不要全自動；清單出來由人判斷輕重，像 Matt 對 release 那條的取捨。</li>
+</ul>
+<h2 id="s7">來源清單</h2>
+<ul>
+<li>影片：<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=BsJGo1wFTvQ">New Skills! v1.3 brings /pr, /implement-spec, and /retro</a>（Matt Pocock 頻道，2026-10-05，14:34）。</li>
+<li>官方 repo：<a rel="noopener noreferrer" target="_blank" href="https://github.com/mattpocock/skills">mattpocock/skills</a><ul>
+<li><a rel="noopener noreferrer" target="_blank" href="https://github.com/mattpocock/skills/releases/tag/v1.3.0">v1.3.0 release</a>（2026-10-04）、<a rel="noopener noreferrer" target="_blank" href="https://github.com/mattpocock/skills/releases/tag/v1.3.1">v1.3.1 release</a></li>
+<li><a rel="noopener noreferrer" target="_blank" href="https://github.com/mattpocock/skills/blob/main/skills/engineering/implement-spec/SKILL.md">implement-spec/SKILL.md</a></li>
+<li><a rel="noopener noreferrer" target="_blank" href="https://github.com/mattpocock/skills/blob/main/skills/engineering/pr/SKILL.md">pr/SKILL.md</a>、<a rel="noopener noreferrer" target="_blank" href="https://github.com/mattpocock/skills/blob/main/skills/engineering/pr/CREDITS.md">pr/CREDITS.md</a></li>
+<li><a rel="noopener noreferrer" target="_blank" href="https://github.com/mattpocock/skills/blob/main/skills/engineering/retro/SKILL.md">retro/SKILL.md</a></li>
+</ul>
+</li>
+<li>講者背景：<a rel="noopener noreferrer" target="_blank" href="https://github.com/mattpocock">GitHub：mattpocock</a>（2026-10-05 讀取，講者自述）。</li>
+<li>Lauren Tan 與 Poteto 的對應：<a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/watch?v=MN9dGgmLyso">訪談影片</a>，以及 <a rel="noopener noreferrer" target="_blank" href="https://github.com/cursor/plugins/blob/main/pstack/.cursor-plugin/plugin.json">pstack 的 plugin.json</a>（作者欄為 Lauren Tan）。</li>
+<li>Dex Horthy 的 <code>show-me</code>：見上方 <code>pr/CREDITS.md</code> 的說明。</li>
+<li>André Staltz 的貼文：取自影片畫面（2026-10-04 12:28 PM），本文未另在 X 上開啟原貼文。</li>
+<li>以上官方內容皆於 2026-10-05 讀取；repo 之後可能再變動。</li>
+</ul>
+</main>
+<footer>本頁為依公開影片與官方 repo 整理的導讀，非 Matt Pocock 或 AI Hero 官方內容。</footer>
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="圖片放大檢視"><button type="button" aria-label="關閉放大檢視">關閉（Esc）</button><img src="" alt=""></div>
+<script>
+(function(){
+  var box=document.getElementById('lightbox'), big=box.querySelector('img'), btn=box.querySelector('button'), last=null;
+  function open(img){last=img;big.src=img.currentSrc||img.src;big.alt=img.alt;box.classList.add('is-open');btn.focus();}
+  function close(){box.classList.remove('is-open');big.removeAttribute('src');if(last){last.focus();}}
+  document.querySelectorAll('figure img').forEach(function(img){
+    img.addEventListener('click',function(){open(img);});
+    img.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open(img);}});
+  });
+  box.addEventListener('click',function(e){if(e.target===box||e.target===btn){close();}});
+  document.addEventListener('keydown',function(e){
+    if(!box.classList.contains('is-open'))return;
+    if(e.key==='Escape'){close();}
+    if(e.key==='Tab'){e.preventDefault();btn.focus();}
+  });
+})();
+</script>
+</body>
+</html>
